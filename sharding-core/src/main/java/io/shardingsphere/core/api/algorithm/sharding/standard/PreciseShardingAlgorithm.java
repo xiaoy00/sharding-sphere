@@ -18,6 +18,7 @@
 package io.shardingsphere.core.api.algorithm.sharding.standard;
 
 import io.shardingsphere.core.api.algorithm.sharding.PreciseShardingValue;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingAlgorithm;
 
 import java.util.Collection;
@@ -39,4 +40,10 @@ public interface PreciseShardingAlgorithm<T extends Comparable<?>> extends Shard
      * @return sharding result for data source or table's name
      */
     String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<T> shardingValue);
+
+    /**
+     * add SQLStatement by songxiaoyue
+     */
+    String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<T> shardingValue, SQLStatement sqlStatement);
+
 }

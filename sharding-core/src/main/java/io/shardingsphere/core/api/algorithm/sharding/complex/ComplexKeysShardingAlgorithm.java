@@ -18,6 +18,7 @@
 package io.shardingsphere.core.api.algorithm.sharding.complex;
 
 import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingAlgorithm;
 
 import java.util.Collection;
@@ -37,4 +38,9 @@ public interface ComplexKeysShardingAlgorithm extends ShardingAlgorithm {
      * @return sharding results for data sources or tables's names
      */
     Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues);
+
+    /**
+     * add SQLStatement by songxiaoyue
+     */
+    Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement);
 }

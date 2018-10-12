@@ -21,7 +21,6 @@ import io.shardingsphere.core.jdbc.adapter.WrapperAdapter;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 
 /**
  * Unsupported {@code Datasource} methods.
@@ -32,11 +31,11 @@ public abstract class AbstractUnsupportedOperationDataSource extends WrapperAdap
     
     @Override
     public final int getLoginTimeout() throws SQLException {
-        throw new SQLFeatureNotSupportedException("unsupported getLoginTimeout()");
+        return 0;
     }
     
     @Override
     public final void setLoginTimeout(final int seconds) throws SQLException {
-        throw new SQLFeatureNotSupportedException("unsupported setLoginTimeout(int seconds)");
+
     }
 }

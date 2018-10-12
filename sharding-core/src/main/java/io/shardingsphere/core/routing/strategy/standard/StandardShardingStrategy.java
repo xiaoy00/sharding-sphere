@@ -25,13 +25,10 @@ import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
 import io.shardingsphere.core.api.algorithm.sharding.standard.RangeShardingAlgorithm;
 import io.shardingsphere.core.api.config.strategy.StandardShardingStrategyConfiguration;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingStrategy;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Standard sharding strategy.
@@ -63,6 +60,19 @@ public final class StandardShardingStrategy implements ShardingStrategy {
         result.addAll(shardingResult);
         return result;
     }
+
+    /**
+     *  add SQLStatement by songxiaoyue
+     */
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement) {
+        ShardingValue shardingValue = shardingValues.iterator().next();
+        Collection<String> shardingResult = shardingValue instanceof ListShardingValue
+                ? doSharding(availableTargetNames, (ListShardingValue) shardingValue,sqlStatement) : doSharding(availableTargetNames, (RangeShardingValue) shardingValue,sqlStatement);
+        Collection<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        result.addAll(shardingResult);
+        return result;
+    }
     
     @SuppressWarnings("unchecked")
     private Collection<String> doSharding(final Collection<String> availableTargetNames, final RangeShardingValue<?> shardingValue) {
@@ -80,6 +90,28 @@ public final class StandardShardingStrategy implements ShardingStrategy {
             if (null != target) {
                 result.add(target);
             }
+        }
+        return result;
+    }
+
+    /**
+     *  add SQLStatement by songxiaoyue
+     */
+    @SuppressWarnings("unchecked")
+    private Collection<String> doSharding(final Collection<String> availableTargetNames, final RangeShardingValue<?> shardingValue,SQLStatement sqlStatement) {
+        if (null == rangeShardingAlgorithm) {
+            throw new UnsupportedOperationException("Cannot find range sharding strategy in sharding rule.");
+        }
+        return rangeShardingAlgorithm.doSharding(availableTargetNames, shardingValue,sqlStatement);
+    }
+    /**
+     *  add SQLStatement by songxiaoyue
+     */
+    @SuppressWarnings("unchecked")
+    private Collection<String> doSharding(final Collection<String> availableTargetNames, final ListShardingValue<?> shardingValue,SQLStatement sqlStatement) {
+        Collection<String> result = new LinkedList<>();
+        for (PreciseShardingValue<?> each : transferToPreciseShardingValues(shardingValue)) {
+            result.add(preciseShardingAlgorithm.doSharding(availableTargetNames, each,sqlStatement));
         }
         return result;
     }

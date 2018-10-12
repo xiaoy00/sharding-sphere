@@ -24,6 +24,7 @@ import io.shardingsphere.core.hint.HintManagerHolder;
 import io.shardingsphere.core.optimizer.condition.ShardingCondition;
 import io.shardingsphere.core.optimizer.condition.ShardingConditions;
 import io.shardingsphere.core.optimizer.insert.InsertShardingCondition;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingStrategy;
 import io.shardingsphere.core.routing.strategy.hint.HintShardingStrategy;
 import io.shardingsphere.core.routing.type.RoutingEngine;
@@ -35,12 +36,7 @@ import io.shardingsphere.core.rule.ShardingRule;
 import io.shardingsphere.core.rule.TableRule;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Standard routing engine.
@@ -57,7 +53,9 @@ public final class StandardRoutingEngine implements RoutingEngine {
     private final String logicTableName;
     
     private final ShardingConditions shardingConditions;
-   
+
+    private final SQLStatement sqlStatement;
+
     @Override
     public RoutingResult route() {
         TableRule tableRule = shardingRule.getTableRuleByLogicTableName(logicTableName);
@@ -153,16 +151,25 @@ public final class StandardRoutingEngine implements RoutingEngine {
         if (databaseShardingValues.isEmpty()) {
             return availableTargetDatabases;
         }
-        Collection<String> result = new LinkedHashSet<>(shardingRule.getDatabaseShardingStrategy(tableRule).doSharding(availableTargetDatabases, databaseShardingValues));
+        /**
+         *  add SQLStatement by songxiaoyue
+         */
+        Collection<String> result = new LinkedHashSet<>(shardingRule.getDatabaseShardingStrategy(tableRule).doSharding(availableTargetDatabases, databaseShardingValues,sqlStatement));
         Preconditions.checkState(!result.isEmpty(), "no database route info");
         return result;
     }
     
     private Collection<DataNode> routeTables(final TableRule tableRule, final String routedDataSource, final List<ShardingValue> tableShardingValues) {
         Collection<String> availableTargetTables = tableRule.getActualTableNames(routedDataSource);
+        /**
+         *  add SQLStatement by songxiaoyue
+         */
         Collection<String> routedTables = new LinkedHashSet<>(tableShardingValues.isEmpty() ? availableTargetTables
-                : shardingRule.getTableShardingStrategy(tableRule).doSharding(availableTargetTables, tableShardingValues));
-        Preconditions.checkState(!routedTables.isEmpty(), "no table route info");
+                : shardingRule.getTableShardingStrategy(tableRule).doSharding(availableTargetTables, tableShardingValues,sqlStatement));
+        /**
+         *  ignore check empty by songxiaoyue
+         */
+        //Preconditions.checkState(!routedTables.isEmpty(), "no table route info");
         Collection<DataNode> result = new LinkedList<>();
         for (String each : routedTables) {
             result.add(new DataNode(routedDataSource, each));

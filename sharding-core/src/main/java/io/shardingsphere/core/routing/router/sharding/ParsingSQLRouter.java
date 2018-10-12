@@ -146,10 +146,16 @@ public final class ParsingSQLRouter implements ShardingRouter {
         } else if (tableNames.isEmpty()) {
             routingEngine = new DatabaseBroadcastRoutingEngine(shardingRule);
         } else if (1 == tableNames.size() || shardingRule.isAllBindingTables(tableNames) || shardingRule.isAllInDefaultDataSource(tableNames)) {
-            routingEngine = new StandardRoutingEngine(shardingRule, tableNames.iterator().next(), shardingConditions);
+            /**
+             * add SQLStatement by songxiaoyue
+             */
+            routingEngine = new StandardRoutingEngine(shardingRule, tableNames.iterator().next(), shardingConditions,sqlStatement);
         } else {
             // TODO config for cartesian set
-            routingEngine = new ComplexRoutingEngine(shardingRule, tableNames, shardingConditions);
+            /**
+             * add SQLStatement by songxiaoyue
+             */
+            routingEngine = new ComplexRoutingEngine(shardingRule, tableNames, shardingConditions,sqlStatement);
         }
         return routingEngine.route();
     }

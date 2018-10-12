@@ -19,6 +19,7 @@ package io.shardingsphere.dbtest.fixture;
 
 import io.shardingsphere.core.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 
 import java.util.Collection;
 
@@ -26,6 +27,16 @@ public final class PreciseModuloAlgorithm implements PreciseShardingAlgorithm<In
 
     @Override
     public String doSharding(final Collection<String> availableTargetNames, final PreciseShardingValue<Integer> shardingValue) {
+        for (String each : availableTargetNames) {
+            if (each.endsWith(shardingValue.getValue() % 10 + "")) {
+                return each;
+            }
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Integer> shardingValue, SQLStatement sqlStatement) {
         for (String each : availableTargetNames) {
             if (each.endsWith(shardingValue.getValue() % 10 + "")) {
                 return each;

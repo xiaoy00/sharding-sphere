@@ -19,6 +19,7 @@ package io.shardingsphere.core.api.algorithm.fixture;
 
 import io.shardingsphere.core.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.standard.PreciseShardingAlgorithm;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 
 import java.util.Collection;
 
@@ -26,6 +27,11 @@ public final class TestPreciseShardingAlgorithm implements PreciseShardingAlgori
     
     @Override
     public String doSharding(final Collection<String> availableTargetNames, final PreciseShardingValue<String> shardingValue) {
+        return shardingValue.getValue();
+    }
+
+    @Override
+    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue, SQLStatement sqlStatement) {
         return shardingValue.getValue();
     }
 }

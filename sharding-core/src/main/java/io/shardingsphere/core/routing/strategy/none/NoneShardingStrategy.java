@@ -18,6 +18,7 @@
 package io.shardingsphere.core.routing.strategy.none;
 
 import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingStrategy;
 import lombok.Getter;
 
@@ -36,6 +37,14 @@ public final class NoneShardingStrategy implements ShardingStrategy {
     
     @Override
     public Collection<String> doSharding(final Collection<String> availableTargetNames, final Collection<ShardingValue> shardingValues) {
+        return availableTargetNames;
+    }
+
+    /**
+     *  add SQLStatement by songxiaoyue
+     */
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement) {
         return availableTargetNames;
     }
 }

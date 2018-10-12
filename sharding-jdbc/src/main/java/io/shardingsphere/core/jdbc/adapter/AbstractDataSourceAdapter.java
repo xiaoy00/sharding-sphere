@@ -45,14 +45,18 @@ public abstract class AbstractDataSourceAdapter extends AbstractUnsupportedOpera
         ShardingBootstrap.init();
     }
     
-    private final DatabaseType databaseType;
+    private DatabaseType databaseType;
     
     private PrintWriter logWriter = new PrintWriter(System.out);
     
     public AbstractDataSourceAdapter(final Collection<DataSource> dataSources) throws SQLException {
         databaseType = getDatabaseType(dataSources);
     }
-    
+
+    public AbstractDataSourceAdapter() {
+
+    }
+
     protected final DatabaseType getDatabaseType(final Collection<DataSource> dataSources) throws SQLException {
         DatabaseType result = null;
         for (DataSource each : dataSources) {

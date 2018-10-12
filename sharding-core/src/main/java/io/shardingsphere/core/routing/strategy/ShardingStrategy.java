@@ -18,6 +18,7 @@
 package io.shardingsphere.core.routing.strategy;
 
 import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 
 import java.util.Collection;
 
@@ -43,4 +44,8 @@ public interface ShardingStrategy {
      * @return sharding results for data sources or tables's names
      */
     Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues);
+    /**
+     * add SQLStatement by songxiaoyue
+     */
+    Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement);
 }

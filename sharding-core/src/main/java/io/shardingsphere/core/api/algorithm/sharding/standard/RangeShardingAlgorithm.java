@@ -18,6 +18,7 @@
 package io.shardingsphere.core.api.algorithm.sharding.standard;
 
 import io.shardingsphere.core.api.algorithm.sharding.RangeShardingValue;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingAlgorithm;
 
 import java.util.Collection;
@@ -39,4 +40,9 @@ public interface RangeShardingAlgorithm<T extends Comparable<?>> extends Shardin
      * @return sharding results for data sources or tables's names
      */
     Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<T> shardingValue);
+
+    /**
+     * add SQLStatement by songxiaoyue
+     */
+    Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<T> shardingValue, SQLStatement sqlStatement);
 }

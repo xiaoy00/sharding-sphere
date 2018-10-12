@@ -21,6 +21,7 @@ import com.google.common.base.Preconditions;
 import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.hint.HintShardingAlgorithm;
 import io.shardingsphere.core.api.config.strategy.HintShardingStrategyConfiguration;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingStrategy;
 import lombok.Getter;
 
@@ -47,6 +48,17 @@ public final class HintShardingStrategy implements ShardingStrategy {
     
     @Override
     public Collection<String> doSharding(final Collection<String> availableTargetNames, final Collection<ShardingValue> shardingValues) {
+        Collection<String> shardingResult = shardingAlgorithm.doSharding(availableTargetNames, shardingValues.iterator().next());
+        Collection<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        result.addAll(shardingResult);
+        return result;
+    }
+
+    /**
+     *  add SQLStatement by songxiaoyue
+     */
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement) {
         Collection<String> shardingResult = shardingAlgorithm.doSharding(availableTargetNames, shardingValues.iterator().next());
         Collection<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         result.addAll(shardingResult);

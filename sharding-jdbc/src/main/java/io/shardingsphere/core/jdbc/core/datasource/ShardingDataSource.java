@@ -27,6 +27,7 @@ import io.shardingsphere.core.jdbc.core.ShardingContext;
 import io.shardingsphere.core.jdbc.core.connection.ShardingConnection;
 import io.shardingsphere.core.rule.ShardingRule;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -42,14 +43,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author panjuan
  */
 @Getter
+@Setter
 public class ShardingDataSource extends AbstractDataSourceAdapter implements AutoCloseable {
+
+    private  Map<String, DataSource> dataSourceMap;
     
-    private final Map<String, DataSource> dataSourceMap;
+    private  ShardingContext shardingContext;
     
-    private final ShardingContext shardingContext;
-    
-    private final ShardingProperties shardingProperties;
-    
+    private  ShardingProperties shardingProperties;
+
+    public ShardingDataSource() {
+    }
+
     public ShardingDataSource(final Map<String, DataSource> dataSourceMap, final ShardingRule shardingRule) throws SQLException {
         this(dataSourceMap, shardingRule, new ConcurrentHashMap<String, Object>(), new Properties());
     }

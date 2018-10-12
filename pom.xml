@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.shardingsphere</groupId>
     <artifactId>sharding-sphere</artifactId>
-    <version>3.0.0.M4-SNAPSHOT</version>
+    <version>3.0.0.M4-yxp-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     
@@ -759,12 +759,14 @@
     
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>snapshots</id>
+            <name>core Snapshots Repository</name>
+            <url>http://172.16.90.11:8888/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype-nexus-releases</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <id>releases</id>
+            <name>core Release Repository</name>
+            <url>http://172.16.90.11:8888/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
 </project>

@@ -24,14 +24,11 @@ import io.shardingsphere.core.api.algorithm.sharding.ListShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
 import io.shardingsphere.core.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 import io.shardingsphere.core.routing.strategy.ShardingStrategy;
 import io.shardingsphere.core.util.InlineExpressionParser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Standard sharding strategy.
@@ -54,6 +51,19 @@ public final class InlineShardingStrategy implements ShardingStrategy {
     
     @Override
     public Collection<String> doSharding(final Collection<String> availableTargetNames, final Collection<ShardingValue> shardingValues) {
+        ShardingValue shardingValue = shardingValues.iterator().next();
+        Preconditions.checkState(shardingValue instanceof ListShardingValue, "Inline strategy cannot support range sharding.");
+        Collection<String> shardingResult = doSharding((ListShardingValue) shardingValue);
+        Collection<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        result.addAll(shardingResult);
+        return result;
+    }
+
+    /**
+     *  add SQLStatement by songxiaoyue
+     */
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement) {
         ShardingValue shardingValue = shardingValues.iterator().next();
         Preconditions.checkState(shardingValue instanceof ListShardingValue, "Inline strategy cannot support range sharding.");
         Collection<String> shardingResult = doSharding((ListShardingValue) shardingValue);

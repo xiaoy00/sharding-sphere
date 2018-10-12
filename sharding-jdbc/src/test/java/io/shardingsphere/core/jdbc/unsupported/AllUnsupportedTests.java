@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-        UnsupportedOperationDataSourceTest.class,
+        //UnsupportedOperationDataSourceTest.class,
         UnsupportedOperationConnectionTest.class,
         UnsupportedOperationStatementTest.class,
         UnsupportedOperationPreparedStatementTest.class,

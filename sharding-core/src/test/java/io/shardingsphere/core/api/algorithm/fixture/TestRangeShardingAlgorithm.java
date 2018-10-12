@@ -19,6 +19,7 @@ package io.shardingsphere.core.api.algorithm.fixture;
 
 import io.shardingsphere.core.api.algorithm.sharding.RangeShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.standard.RangeShardingAlgorithm;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +28,15 @@ public final class TestRangeShardingAlgorithm implements RangeShardingAlgorithm<
     
     @Override
     public Collection<String> doSharding(final Collection<String> availableTargetNames, final RangeShardingValue<String> shardingValue) {
+        Collection<String> result = new ArrayList<>();
+        for (Integer i = Integer.parseInt(shardingValue.getValueRange().lowerEndpoint()); i <= Integer.parseInt(shardingValue.getValueRange().upperEndpoint()); i++) {
+            result.add(i.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<String> shardingValue, SQLStatement sqlStatement) {
         Collection<String> result = new ArrayList<>();
         for (Integer i = Integer.parseInt(shardingValue.getValueRange().lowerEndpoint()); i <= Integer.parseInt(shardingValue.getValueRange().upperEndpoint()); i++) {
             result.add(i.toString());

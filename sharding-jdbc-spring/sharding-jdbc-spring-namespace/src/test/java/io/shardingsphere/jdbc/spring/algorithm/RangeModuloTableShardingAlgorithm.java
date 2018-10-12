@@ -20,6 +20,7 @@ package io.shardingsphere.jdbc.spring.algorithm;
 import com.google.common.collect.Range;
 import io.shardingsphere.core.api.algorithm.sharding.RangeShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.standard.RangeShardingAlgorithm;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -28,6 +29,20 @@ public final class RangeModuloTableShardingAlgorithm implements RangeShardingAlg
     
     @Override
     public Collection<String> doSharding(final Collection<String> availableTargetNames, final RangeShardingValue<Integer> shardingValue) {
+        Collection<String> result = new LinkedHashSet<>(availableTargetNames.size());
+        Range<Integer> range = shardingValue.getValueRange();
+        for (Integer i = range.lowerEndpoint(); i <= range.upperEndpoint(); i++) {
+            for (String each : availableTargetNames) {
+                if (each.endsWith(i % 4 + "")) {
+                    result.add(each);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<Integer> shardingValue, SQLStatement sqlStatement) {
         Collection<String> result = new LinkedHashSet<>(availableTargetNames.size());
         Range<Integer> range = shardingValue.getValueRange();
         for (Integer i = range.lowerEndpoint(); i <= range.upperEndpoint(); i++) {

@@ -19,6 +19,7 @@ package io.shardingsphere.core.fixture;
 
 import io.shardingsphere.core.api.algorithm.sharding.ShardingValue;
 import io.shardingsphere.core.api.algorithm.sharding.complex.ComplexKeysShardingAlgorithm;
+import io.shardingsphere.core.parsing.parser.sql.SQLStatement;
 
 import java.util.Collection;
 
@@ -26,6 +27,11 @@ public final class ComplexOrderShardingAlgorithm implements ComplexKeysShardingA
     
     @Override
     public Collection<String> doSharding(final Collection<String> availableTargetNames, final Collection<ShardingValue> shardingValues) {
+        return availableTargetNames;
+    }
+
+    @Override
+    public Collection<String> doSharding(Collection<String> availableTargetNames, Collection<ShardingValue> shardingValues, SQLStatement sqlStatement) {
         return availableTargetNames;
     }
 }
