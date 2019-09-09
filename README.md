@@ -1,3 +1,6 @@
+基于3.0.0.M4版本。修改路由操作，增加statement，区分sql操作类型
+
+
 # [Sharding-Sphere - Distributed Database Middleware Ecosphere](http://shardingsphere.io/)
 
 Official website: http://shardingsphere.io/
